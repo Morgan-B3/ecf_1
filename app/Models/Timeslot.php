@@ -10,7 +10,12 @@ class Timeslot extends Model
     /** @use HasFactory<\Database\Factories\TimeslotFactory> */
     use HasFactory;
 
-    protected $fillable = ['sport_id', 'starts_at', 'ends_at', 'capacity'];
+    protected $fillable = [
+        'sport_id',
+        'starts_at',
+        'ends_at',
+        'capacity'
+    ];
 
     public function sport()
     {

@@ -17,7 +17,8 @@ class TimeslotFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'capacity' => $this->faker->numberBetween(1, 100),
+            'sport_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
