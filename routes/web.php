@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SportController;
+use App\Http\Controllers\TimeslotController;
 use App\Models\Sport;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,7 @@ Route::get('/', function () {
 });
 
 Route::resource('sports', SportController::class);
+Route::resource('timeslots', TimeslotController::class);
 
 
 Route::get('/dashboard', function () {

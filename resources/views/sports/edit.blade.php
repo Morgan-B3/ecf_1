@@ -55,26 +55,37 @@
         </div>
     </form>
 
-    <form method="POST">
-        @csrf
-        @method('PATCH')
-        <div class="">
-            <label class="block text-sm/6 font-medium text-gray-900">Créneaux affichés</label>
-            @foreach ($sport->timeslots as $timeslot )
+    <div class="">
+        <p class="block text-sm/6 font-medium text-gray-900">Créneaux affichés</p>
+        @foreach ($sport->timeslots as $timeslot )
+        <form method="POST" action="/timeslots">
+            @csrf
+            @method('PATCH')
             <div class="flex items-center gap-5 py-1.5">
                 <input type="time" name="starts_at" id="starts_at" class="block min-w-0  py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->starts_at }}">
                 <input type="time" name="ends_at" id="ends_at" class="block min-w-0 py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->ends_at }}">
                 <p>{{($timeslot->capacity - $timeslot->bookings->count())}}/{{$timeslot->capacity}} places</p>
-                <a class="text-red-500 text-sm font-bold" href="/timeslot/{{$timeslot->id}}/destroy">Supprimer</a>
+                <button form="timeslot-delete-form" class="text-red-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/destroy">Supprimer</button>
             </div>
             <a href="/timeslot/create"></a>
-            @endforeach
-        </div>
-    </form>
+        </form>
+        <form method="POST" action="/timeslots/{{$timeslot->id}}" id="timeslot-delete-form" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+        @endforeach
+        {{-- <form action="">
+            <div>
+                <input type="time" name="starts_at" id="starts_at" class="block min-w-0  py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->starts_at }}">
+                <input type="time" name="ends_at" id="ends_at" class="block min-w-0 py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->ends_at }}">
+            </div>
+        </form> --}}
+    </div>
 
     <form method="POST" action="/sports/{{$sport->id}}" id="delete-form" class="hidden">
         @csrf
         @method('DELETE')
     </form>
+
 
 </x-layout>
