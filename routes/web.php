@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\TimeslotController;
@@ -15,6 +16,8 @@ Route::get('/', function () {
 
 Route::resource('sports', SportController::class);
 Route::resource('timeslots', TimeslotController::class);
+Route::resource('bookings', BookingController::class);
+
 
 
 Route::get('/dashboard', function () {
