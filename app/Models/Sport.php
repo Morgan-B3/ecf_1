@@ -9,4 +9,13 @@ class Sport extends Model
 {
     /** @use HasFactory<\Database\Factories\SportFactory> */
     use HasFactory;
+
+    protected $fillable = ['name', 'description'];
+
+    public function timeslots()
+    {
+        return $this->hasMany(Timeslot::class);
+    }
+
+
 }

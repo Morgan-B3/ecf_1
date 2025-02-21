@@ -9,4 +9,17 @@ class Timeslot extends Model
 {
     /** @use HasFactory<\Database\Factories\TimeslotFactory> */
     use HasFactory;
+
+    protected $fillable = ['sport_id', 'starts_at', 'ends_at', 'capacity'];
+
+    public function sport()
+    {
+        return $this->belongsTo(Sport::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
 }
