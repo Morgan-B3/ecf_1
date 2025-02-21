@@ -1,11 +1,19 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SportController;
+use App\Models\Sport;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $sports = Sport::all();
+    return view('sports/index', [
+        'sports' => $sports,
+    ]);
 });
+
+Route::resource('sports', SportController::class);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
