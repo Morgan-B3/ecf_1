@@ -59,7 +59,7 @@
     <div class="">
         <p class="block text-sm/6 font-medium text-gray-900">Créneaux affichés</p>
         @foreach ($sport->timeslots as $timeslot )
-        <form method="POST" action="/timeslots/{{$timeslot->id}}" id="timeslot-edit-form" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('timeslots.update', $timeslot->id) }}" id="timeslot-edit-form" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="flex items-center gap-5 py-1.5">
@@ -76,13 +76,13 @@
                     <input type="number" name="capacity" id="capacity" class="w-10" value="{{ $timeslot->capacity }}">
                 </div>
                 <input type="text" name="sport_id" id="sport_id" value="{{ $sport->id }}" class="hidden">
-                <button type="submit" class="text-green-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/update" form="timeslot-edit-form">Modifier</button>
-                <button form="timeslot-delete-form" class="text-red-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/destroy">Supprimer</button>
+                <button type="submit" class="text-green-500 text-sm font-bold" type="submit" form="timeslot-edit-form">Modifier</button>
+                <button form="timeslot-delete-form" class="text-red-500 text-sm font-bold" type="submit">Supprimer</button>
             </div>
         </form>
 
         {{-- Suppression d'un timeslot --}}
-        <form method="POST" action="/timeslots/{{$timeslot->id}}" id="timeslot-delete-form" class="hidden" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('timeslots.destroy', $timeslot->id) }}" id="timeslot-delete-form" class="hidden" enctype="multipart/form-data">
             @csrf
             @method('DELETE')
         </form>
