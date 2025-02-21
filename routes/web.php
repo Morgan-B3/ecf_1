@@ -5,8 +5,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\TimeslotController;
 use App\Models\Sport;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
+// Affichage pour utilisateur non-connecté
 Route::get('/', function () {
     $sports = Sport::all();
     return view('sports/index', [
@@ -14,9 +16,21 @@ Route::get('/', function () {
     ]);
 });
 
-Route::resource('sports', SportController::class);
-Route::resource('timeslots', TimeslotController::class);
-Route::resource('bookings', BookingController::class);
+Route::resource('sports', SportController::class)->only(['index', 'show']);
+Route::resource('timeslots', TimeslotController::class)->only(['index', 'show']);
+
+
+// Gestion utilisateur connecté
+Route::middleware(['auth'])->group(function () {
+    Route::resource('bookings', BookingController::class)->only(['index', 'create', 'store']);
+});
+
+
+// Gestion administrateur
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::resource('sports', SportController::class)->except(['index', 'show']);
+    Route::resource('timeslots', TimeslotController::class)->except(['index', 'show']);
+});
 
 
 
