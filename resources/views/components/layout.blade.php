@@ -19,13 +19,30 @@
                                 <a href="/" class="text-white font-bold text-3xl">&#128170; FitLife
                                 </a>
                             </div>
-                            <div class="hidden md:block">
-                                <div class="ml-10 flex items-baseline space-x-4">
-                                    <a href="/" class="rounded-md px-3 py-2 text-sm font-medium text-white" aria-current="page">
-                                        Profil
-                                    </a>
+                            @auth
+                                <div class="hidden md:block">
+                                    <div class="ml-10 flex items-baseline space-x-4">
+                                        <a href="/bookings" class="rounded-md px-3 py-2 text-sm font-medium text-white" aria-current="page">
+                                            Profil
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="hidden md:block">
+                                    <div class="ml-10 flex items-baseline space-x-4">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="rounded-md px-3 py-2 text-sm font-medium text-white">
+                                                {{ __('Déconnexion') }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endauth
+                            @guest
+                                <a href="/bookings" class="rounded-md px-3 py-2 text-sm font-medium text-white" aria-current="page">
+                                    Connexion
+                                </a>
+                            @endguest
                         </div>
                     </div>
                 </div>

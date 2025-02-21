@@ -107,7 +107,7 @@
                     <input type="number" name="capacity" id="capacity" class="w-10" value="">
                 </div>
                 <input type="text" name="sport_id" id="sport_id" value="{{ $sport->id }}" class="hidden">
-                <button type="submit" form="timeslot-create-form" class="text-green-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/add_timeslot">Ajouter</button>
+                <button type="submit" form="timeslot-create-form" class="text-green-500 text-sm font-bold" type="submit">Ajouter</button>
             </div>
         </form>
     </div>

@@ -22,15 +22,17 @@ Route::resource('timeslots', TimeslotController::class)->only(['index', 'show'])
 
 // Gestion utilisateur connecté
 Route::middleware(['auth'])->group(function () {
-    Route::resource('bookings', BookingController::class)->only(['index', 'create', 'store']);
+    Route::resource('bookings', BookingController::class);
+    Route::resource('sports', SportController::class)->except(['index', 'show']);
+    Route::resource('timeslots', TimeslotController::class)->except(['index', 'show']);
 });
 
 
 // Gestion administrateur
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::resource('sports', SportController::class)->except(['index', 'show']);
-    Route::resource('timeslots', TimeslotController::class)->except(['index', 'show']);
-});
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::resource('sports', SportController::class)->except(['index', 'show']);
+//     Route::resource('timeslots', TimeslotController::class)->except(['index', 'show']);
+// });
 
 
 

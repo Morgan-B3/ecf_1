@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
     public function index() {
-        $booking = Booking::with('bookings')->latest()->paginate(10);
+        $user = Auth::user();
+        $bookings = $user->bookings;
 
-        return view('bookings.index', ['booking' => $booking]);
+        return view('bookings.index', ['bookings' => $bookings, 'user' => $user]);
     }
 
     public function create() {
@@ -33,5 +34,10 @@ class BookingController extends Controller
         ]);
 
         return redirect('/sports/'.request('sport_id'));
+    }
+
+    public function destroy(Booking $booking) {
+        $booking->delete();
+        return redirect('/bookings');
     }
 }
