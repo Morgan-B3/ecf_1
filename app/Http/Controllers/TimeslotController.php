@@ -44,14 +44,18 @@ class TimeslotController extends Controller
     }
 
     public function update(timeslot $timeslot) {
-        request()->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
+        // request()->validate([
+        //     'sport_id' => request('sport_id'),
+        //     'starts_at' => request('starts_at'),
+        //     'ends_at' => request('ends_at'),
+        //     'capacity' => request('capacity')
+        // ]);
 
         $timeslot->update([
-            'name' => request('name'),
-            'description' => request('description'),
+            'sport_id' => request('sport_id'),
+            'starts_at' => request('starts_at'),
+            'ends_at' => request('ends_at'),
+            'capacity' => request('capacity')
         ]);
 
         return redirect('/sports/'.$timeslot->sport->id.'/edit' );

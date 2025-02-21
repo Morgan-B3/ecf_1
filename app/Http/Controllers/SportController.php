@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sport;
+use App\Models\Timeslot;
 use Illuminate\Http\Request;
 
 class SportController extends Controller
@@ -51,6 +52,25 @@ class SportController extends Controller
         ]);
 
         return redirect('/sports/'.$sport->id );
+    }
+
+    public function add_timeslot(sport $sport) {
+        request()->validate([
+            'starts_at' => 'required',
+            'ends_at' => 'required',
+            'capacity' => 'required',
+        ]);
+
+        $sport = Sport::findOrFail($sport);
+
+
+        Timeslot::create([
+            'sport_id' => $sport->id,
+            'starts_at' => request()->starts_at,
+            'ends_at' => request()->ends_at,
+        ]);
+
+        return redirect('/sports/'.$sport->id.'/edit');
     }
 
     public function destroy(sport $sport) {

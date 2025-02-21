@@ -3,7 +3,7 @@
         Modifier {{$sport->name}}
     </x-slot:heading>
 
-    <form method="post" action="/sports/{{ $sport->id }}">
+    <form method="post" action="/sports/{{ $sport->id }}" id="sport-edit-form" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <div class="space-y-12">
@@ -50,39 +50,69 @@
         <div class="mt-6 flex items-center justify-end gap-x-6">
 
             <button form="delete-form" class="text-red-500 text-sm font-bold">Supprimer</button>
-            <a class="text-sm/6 font-semibold text-gray-900" href="/sport/{{$sport->id}}">Annuler</a>
-            <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+            <a class="text-sm/6 font-semibold text-gray-900" href="/sports/{{$sport->id}}">Annuler</a>
+            <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Enregistrer</button>
         </div>
     </form>
 
+    {{-- Modification des timeslots --}}
     <div class="">
         <p class="block text-sm/6 font-medium text-gray-900">Créneaux affichés</p>
         @foreach ($sport->timeslots as $timeslot )
-        <form method="POST" action="/timeslots">
+        <form method="POST" action="/timeslots/{{$timeslot->id}}" id="timeslot-edit-form" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="flex items-center gap-5 py-1.5">
-                <input type="time" name="starts_at" id="starts_at" class="block min-w-0  py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->starts_at }}">
-                <input type="time" name="ends_at" id="ends_at" class="block min-w-0 py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->ends_at }}">
-                <p>{{($timeslot->capacity - $timeslot->bookings->count())}}/{{$timeslot->capacity}} places</p>
+                <div class="flex items-center gap-5">
+                    <label for="starts_at">Début</label>
+                    <input type="time" name="starts_at" id="starts_at" class="block min-w-0  py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->starts_at }}">
+                </div>
+                <div class="flex items-center gap-5">
+                    <label for="ends_at">Fin</label>
+                    <input type="time" name="ends_at" id="ends_at" class="block min-w-0 py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->ends_at }}">
+                </div>
+                <div class="flex items-center gap-5">
+                    <label for="capacity">Places :</label>
+                    <input type="number" name="capacity" id="capacity" class="w-10" value="{{ $timeslot->capacity }}">
+                </div>
+                <input type="text" name="sport_id" id="sport_id" value="{{ $sport->id }}" class="hidden">
+                <button type="submit" class="text-green-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/update" form="timeslot-edit-form">Modifier</button>
                 <button form="timeslot-delete-form" class="text-red-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/destroy">Supprimer</button>
             </div>
-            <a href="/timeslot/create"></a>
         </form>
-        <form method="POST" action="/timeslots/{{$timeslot->id}}" id="timeslot-delete-form" class="hidden">
+
+        {{-- Suppression d'un timeslot --}}
+        <form method="POST" action="/timeslots/{{$timeslot->id}}" id="timeslot-delete-form" class="hidden" enctype="multipart/form-data">
             @csrf
             @method('DELETE')
         </form>
         @endforeach
-        {{-- <form action="">
-            <div>
-                <input type="time" name="starts_at" id="starts_at" class="block min-w-0  py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->starts_at }}">
-                <input type="time" name="ends_at" id="ends_at" class="block min-w-0 py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="{{ $timeslot->ends_at }}">
+    </div>
+        {{-- Ajout d'un timeslot --}}
+    <div>
+        <p class="block text-sm/6 font-medium text-gray-900">Ajouter un créaneau</p>
+        <form method="POST" id="timeslot-create-form" action="/timeslots" enctype="multipart/form-data">
+            @csrf
+            <div class="flex items-center gap-5 py-1.5">
+                <div class="flex items-center gap-5">
+                    <label for="starts_at">Début</label>
+                    <input type="time" name="starts_at" id="starts_at" class="block min-w-0  py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="">
+                </div>
+                <div class="flex items-center gap-5">
+                    <label for="ends_at">Fin</label>
+                    <input type="time" name="ends_at" id="ends_at" class="block min-w-0 py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" value="">
+                </div>
+                <div class="flex items-center gap-5">
+                    <label for="capacity">Places :</label>
+                    <input type="number" name="capacity" id="capacity" class="w-10" value="">
+                </div>
+                <input type="text" name="sport_id" id="sport_id" value="{{ $sport->id }}" class="hidden">
+                <button type="submit" form="timeslot-create-form" class="text-green-500 text-sm font-bold" href="/timeslots/{{$timeslot->id}}/add_timeslot">Ajouter</button>
             </div>
-        </form> --}}
+        </form>
     </div>
 
-    <form method="POST" action="/sports/{{$sport->id}}" id="delete-form" class="hidden">
+    <form method="POST" action="/sports/{{$sport->id}}" id="delete-form" class="hidden" enctype="multipart/form-data">
         @csrf
         @method('DELETE')
     </form>
