@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('timeslots', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('sport_id')->constrained()->cascadeOnDelete();
+            $table->dateTime('starts_at');
+            $table->dateTime('ends_at');
+            $table->integer('capacity');
             $table->timestamps();
         });
     }
